@@ -1,8 +1,15 @@
+using BlazorExamApps.Server.Data;
+using BlazorExamApps.Shared.Models;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+ConfigurationManager configuration = builder.Configuration;
+builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IElementRepository, ElementRepositoryImpl>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
